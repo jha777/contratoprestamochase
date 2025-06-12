@@ -2,52 +2,53 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contrato de Préstamo</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-6">
+<body class="bg-gray-100 px-4 py-6 overflow-x-hidden">
 
   <!-- Formulario -->
-  <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow mb-10">
+  <div class="max-w-4xl mx-auto bg-white p-4 sm:p-6 rounded shadow mb-10">
     <h1 class="text-2xl font-bold mb-4">Datos del Contrato de Préstamo</h1>
 
     <!-- Datos del Prestamista -->
     <h2 class="text-lg font-semibold mb-2">Datos del Prestamista</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <input id="prestamista" placeholder="Nombre del Prestamista" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="dniPrestamista" placeholder="Cédula" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="direccionPrestamista" placeholder="Dirección del Prestamista" class="p-2 border rounded col-span-2" oninput="actualizarVista()" />
+      <input id="prestamista" placeholder="Nombre del Prestamista" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="dniPrestamista" placeholder="Cédula" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="direccionPrestamista" placeholder="Dirección del Prestamista" class="w-full p-2 border rounded col-span-1 md:col-span-2" oninput="actualizarVista()" />
     </div>
 
     <!-- Datos del Prestatario -->
     <h2 class="text-lg font-semibold mb-2">Datos del Prestatario</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <input id="prestatario" placeholder="Nombre del Prestatario" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="dniPrestatario" placeholder="Cédula" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="direccionPrestatario" placeholder="Dirección del Prestatario" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="telefonoPrestatario" placeholder="Teléfono del Prestatario" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="emailPrestatario" placeholder="Correo del Prestatario" class="p-2 border rounded col-span-2" oninput="actualizarVista()" />
+      <input id="prestatario" placeholder="Nombre del Prestatario" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="dniPrestatario" placeholder="Cédula" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="direccionPrestatario" placeholder="Dirección del Prestatario" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="telefonoPrestatario" placeholder="Teléfono del Prestatario" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="emailPrestatario" placeholder="Correo del Prestatario" class="w-full p-2 border rounded col-span-1 md:col-span-2" oninput="actualizarVista()" />
     </div>
 
     <!-- Datos del Préstamo -->
     <h2 class="text-lg font-semibold mb-2">Datos del Préstamo</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input id="monto" placeholder="Monto del Préstamo" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="interes" placeholder="Tasa de Interés (%)" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="meses" placeholder="Número de Meses" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="pagoMensual" placeholder="Monto de Pago Mensual" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="cuentaBancaria" placeholder="Número de Cuenta" class="p-2 border rounded" oninput="actualizarVista()" />
-      <input id="fecha" type="date" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="monto" placeholder="Monto del Préstamo" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="interes" placeholder="Tasa de Interés (%)" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="meses" placeholder="Número de Meses" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="pagoMensual" placeholder="Monto de Pago Mensual" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="cuentaBancaria" placeholder="Número de Cuenta" class="w-full p-2 border rounded" oninput="actualizarVista()" />
+      <input id="fecha" type="date" class="w-full p-2 border rounded" oninput="actualizarVista()" />
     </div>
 
-    <button onclick="generarPDF()" class="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+    <button onclick="generarPDF()" class="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-full sm:w-auto">
       Generar Contrato en PDF
     </button>
   </div>
 
   <!-- Vista previa del contrato -->
-  <div id="contrato" class="max-w-3xl mx-auto bg-white p-6 text-justify text-sm leading-relaxed rounded shadow">
+  <div id="contrato" class="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 text-justify text-sm leading-relaxed rounded shadow">
     <h2 class="text-xl font-bold mb-4 text-center">Modelo de Préstamo CHASE</h2>
     <p><strong>Entre:</strong><br>
       <span id="cPrestatario"></span><br>
@@ -95,16 +96,17 @@
 
     <p class="mt-8 font-semibold">Atentamente,</p>
 
-    <div class="mt-6 flex flex-col md:flex-row justify-between gap-10">
-    <div>
-      <p class="font-bold"><span id="cPrestatarioFirma"></span></p>
-      <p class="text-sm text-gray-600">C.C. <span id="cDniPrestatarioFirma"></span></p>
-      <p class="text-sm text-gray-600">Prestatario</p>
-    </div>
-    <div>
-      <p class="font-bold"><span id="cPrestamistaFirma"></span></p>
-      <p class="text-sm text-gray-600">C.C. <span id="cDniPrestamistaFirma"></span></p>
-      <p class="text-sm text-gray-600">Prestamista</p>
+    <div class="mt-6 flex flex-col sm:flex-row justify-between gap-6">
+      <div>
+        <p class="font-bold"><span id="cPrestatarioFirma"></span></p>
+        <p class="text-sm text-gray-600">C.C. <span id="cDniPrestatarioFirma"></span></p>
+        <p class="text-sm text-gray-600">Prestatario</p>
+      </div>
+      <div>
+        <p class="font-bold"><span id="cPrestamistaFirma"></span></p>
+        <p class="text-sm text-gray-600">C.C. <span id="cDniPrestamistaFirma"></span></p>
+        <p class="text-sm text-gray-600">Prestamista</p>
+      </div>
     </div>
   </div>
 
@@ -155,7 +157,7 @@
     }
 
     function generarPDF() {
-      actualizarVista(); // Asegura datos actualizados antes de exportar
+      actualizarVista();
       const contrato = document.getElementById("contrato");
 
       html2pdf().set({
