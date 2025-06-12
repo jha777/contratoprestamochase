@@ -6,6 +6,26 @@
   <title>Contrato de Préstamo</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #contrato-preview {
+      background: white;
+      color: #000;
+      font-size: 10pt;
+      font-family: 'Arial', sans-serif;
+      line-height: 1.4;
+      padding: 25px;
+      max-width: 794px;
+      min-height: 1123px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    #contrato-preview img.logo {
+      max-width: 120px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 px-4 py-6 overflow-x-hidden">
 
@@ -47,72 +67,11 @@
     </button>
   </div>
 
-  <!-- Vista previa del contrato -->
-  <div id="contrato" class="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 text-justify text-sm leading-relaxed rounded shadow">
-    <h2 class="text-xl font-bold mb-4 text-center">Modelo de Préstamo CHASE</h2>
-    <p><strong>Entre:</strong><br>
-      <span id="cPrestatario"></span><br>
-      <span id="cDniPrestatario"></span><br>
-      <span id="cDireccionPrestatario"></span><br>
-      <span id="cTelefonoPrestatario"></span><br>
-      <span id="cEmailPrestatario"></span><br><br>
-      <strong>Y:</strong><br>
-      <span id="cPrestamista"></span><br>
-      <span id="cDniPrestamista"></span><br>
-      <span id="cDireccionPrestamista"></span>
-    </p>
-
-    <p class="mt-4"><strong>Introducción:</strong><br>
-      Este acuerdo establece los términos y condiciones bajo los cuales <span id="cPrestamista2"></span> presta una cantidad de dinero a <span id="cPrestatario2"></span>, detallando las obligaciones de ambas partes.
-    </p>
-
-    <p class="mt-4"><strong>Cláusula 1: Objeto del Contrato</strong><br>
-      El presente contrato tiene como objeto regular el préstamo de la cantidad de <span id="cMonto1"></span> a <span id="cPrestatario3"></span>, que se devolverá en los términos establecidos en este documento.
-    </p>
-
-    <p class="mt-4"><strong>Cláusula 2: Monto del Préstamo</strong><br>
-      La suma total prestada es de <span id="cMonto2"></span>, la cual será entregada en su totalidad a la firma del presente contrato.
-    </p>
-
-    <p class="mt-4"><strong>Cláusula 3: Intereses y Plazo de Devolución</strong><br>
-      El préstamo devengará un interés del <span id="cInteres"></span>% mensual, y deberá ser devuelto en un plazo de <span id="cMeses"></span> meses, comenzando desde la fecha de firma del contrato.
-    </p>
-
-    <p class="mt-4"><strong>Cláusula 4: Forma de Pago</strong><br>
-      Los pagos se realizarán de la siguiente manera:<br>
-      a) Pagos mensuales de <span id="cPagoMensual"></span>;<br>
-      b) Los pagos se realizarán a través de transferencia bancaria a la cuenta <span id="cCuentaBancaria"></span>.
-    </p>
-
-    <p class="mt-4"><strong>Cláusula 5: Incumplimiento</strong><br>
-      En caso de incumplimiento de los términos acordados, el prestamista se reserva el derecho de exigir el pago inmediato del total del monto adeudado, incluyendo intereses acumulados.
-    </p>
-
-    <p class="mt-4"><strong>Cláusula 6: Disposiciones Finales</strong><br>
-      Este contrato podrá modificarse solo mediante un acuerdo por escrito, firmado por ambas partes. En caso de controversia, será resuelta en el juzgado de la ciudad de Cali.
-    </p>
-
-    <p class="mt-4">Firmado en Cali, Valle del Cauca, <span id="cFecha"></span>.</p>
-
-    <p class="mt-8 font-semibold">Atentamente,</p>
-
-    <div class="mt-6 flex flex-col sm:flex-row justify-between gap-6">
-      <div>
-        <p class="font-bold"><span id="cPrestatarioFirma"></span></p>
-        <p class="text-sm text-gray-600">C.C. <span id="cDniPrestatarioFirma"></span></p>
-        <p class="text-sm text-gray-600">Prestatario</p>
-      </div>
-      <div>
-        <p class="font-bold"><span id="cPrestamistaFirma"></span></p>
-        <p class="text-sm text-gray-600">C.C. <span id="cDniPrestamistaFirma"></span></p>
-        <p class="text-sm text-gray-600">Prestamista</p>
-      </div>
-    </div>
-  </div>
+  <!-- Vista previa del contrato visible -->
+  <div id="contrato-preview" class="mb-10"></div>
 
   <script>
-    const get = id => document.getElementById(id).value;
-    const fill = (id, val) => document.getElementById(id).textContent = val;
+    const get = id => document.getElementById(id).value.trim() || '(dato no ingresado)';
 
     function actualizarVista() {
       const datos = {
@@ -129,45 +88,88 @@
         meses: get("meses"),
         pagoMensual: get("pagoMensual"),
         cuentaBancaria: get("cuentaBancaria"),
-        fecha: get("fecha"),
+        fecha: get("fecha") || '(fecha no especificada)'
       };
 
-      fill("cPrestatario", datos.prestatario);
-      fill("cDniPrestatario", datos.dniPrestatario);
-      fill("cDireccionPrestatario", datos.direccionPrestatario);
-      fill("cTelefonoPrestatario", datos.telefonoPrestatario);
-      fill("cEmailPrestatario", datos.emailPrestatario);
-      fill("cPrestamista", datos.prestamista);
-      fill("cDniPrestamista", datos.dniPrestamista);
-      fill("cDireccionPrestamista", datos.direccionPrestamista);
-      fill("cPrestamista2", datos.prestamista);
-      fill("cPrestatario2", datos.prestatario);
-      fill("cMonto1", datos.monto);
-      fill("cPrestatario3", datos.prestatario);
-      fill("cMonto2", datos.monto);
-      fill("cInteres", datos.interes);
-      fill("cMeses", datos.meses);
-      fill("cPagoMensual", datos.pagoMensual);
-      fill("cCuentaBancaria", datos.cuentaBancaria);
-      fill("cFecha", datos.fecha);
-      fill("cPrestatarioFirma", datos.prestatario);
-      fill("cDniPrestatarioFirma", datos.dniPrestatario);
-      fill("cPrestamistaFirma", datos.prestamista);
-      fill("cDniPrestamistaFirma", datos.dniPrestamista);
+      const html = `
+        <img src="https://via.placeholder.com/150x50?text=LOGO+EMPRESA" alt="Logo Empresa" class="logo">
+        <h2 style="text-align: center; font-weight: bold; font-size: 16px; margin-bottom: 12px;">Modelo de Préstamo CHASE</h2>
+        <p><strong>Entre:</strong><br>
+          ${datos.prestatario}<br>
+          ${datos.dniPrestatario}<br>
+          ${datos.direccionPrestatario}<br>
+          ${datos.telefonoPrestatario}<br>
+          ${datos.emailPrestatario}<br><br>
+          <strong>Y:</strong><br>
+          ${datos.prestamista}<br>
+          ${datos.dniPrestamista}<br>
+          ${datos.direccionPrestamista}
+        </p>
+
+        <p style="margin-top: 0.8em;"><strong>Introducción:</strong><br>
+          Este acuerdo establece los términos y condiciones bajo los cuales ${datos.prestamista} presta una cantidad de dinero a ${datos.prestatario}, detallando las obligaciones de ambas partes.
+        </p>
+
+        <p style="margin-top: 0.8em;"><strong>Cláusula 1: Objeto del Contrato</strong><br>
+          El presente contrato tiene como objeto regular el préstamo de la cantidad de ${datos.monto} a ${datos.prestatario}, que se devolverá en los términos establecidos en este documento.
+        </p>
+
+        <p style="margin-top: 0.8em;"><strong>Cláusula 2: Monto del Préstamo</strong><br>
+          La suma total prestada es de ${datos.monto}, la cual será entregada en su totalidad a la firma del presente contrato.
+        </p>
+
+        <p style="margin-top: 0.8em;"><strong>Cláusula 3: Intereses y Plazo de Devolución</strong><br>
+          El préstamo devengará un interés del ${datos.interes}% mensual, y deberá ser devuelto en un plazo de ${datos.meses} meses, comenzando desde la fecha de firma del contrato.
+        </p>
+
+        <p style="margin-top: 0.8em;"><strong>Cláusula 4: Forma de Pago</strong><br>
+          Los pagos se realizarán de la siguiente manera:<br>
+          a) Pagos mensuales de ${datos.pagoMensual};<br>
+          b) Los pagos se realizarán a través de transferencia bancaria a la cuenta ${datos.cuentaBancaria}.
+        </p>
+
+        <p style="margin-top: 0.8em;"><strong>Cláusula 5: Incumplimiento</strong><br>
+          En caso de incumplimiento de los términos acordados, el prestamista se reserva el derecho de exigir el pago inmediato del total del monto adeudado, incluyendo intereses acumulados.
+        </p>
+
+        <p style="margin-top: 0.8em;"><strong>Cláusula 6: Disposiciones Finales</strong><br>
+          Este contrato podrá modificarse solo mediante un acuerdo por escrito, firmado por ambas partes. En caso de controversia, será resuelta en el juzgado de la ciudad de Cali.
+        </p>
+
+        <p style="margin-top: 0.8em;">Firmado en Cali, Valle del Cauca, ${datos.fecha}.</p>
+
+        <p style="margin-top: 1.2em; font-weight: bold;">Atentamente,</p>
+        <div style="margin-top: 1.5em; display: flex; justify-content: space-between; font-size: 9pt;">
+          <div>
+            <p style="font-weight: bold;">${datos.prestatario}</p>
+            <p>C.C. ${datos.dniPrestatario}</p>
+            <p>Prestatario</p>
+          </div>
+          <div>
+            <p style="font-weight: bold;">${datos.prestamista}</p>
+            <p>C.C. ${datos.dniPrestamista}</p>
+            <p>Prestamista</p>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("contrato-preview").innerHTML = html;
     }
 
     function generarPDF() {
       actualizarVista();
-      const contrato = document.getElementById("contrato");
+      const contrato = document.getElementById("contrato-preview");
 
       html2pdf().set({
-        margin: 5,
-        filename: `Contrato_Prestamo_${get("prestatario")}.pdf`,
+        margin: 0,
+        filename: `Contrato_Prestamo_${get("prestatario").replaceAll(" ", "_") || "generico"}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       }).from(contrato).save();
     }
+
+    actualizarVista();
   </script>
 </body>
 </html>
