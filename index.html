@@ -21,9 +21,32 @@
       box-sizing: border-box;
       overflow: hidden;
     }
+
     #contrato-preview img.logo {
       max-width: 120px;
       margin-bottom: 20px;
+    }
+
+    @media screen and (max-width: 768px) {
+      #contrato-preview {
+        font-size: 11px;
+        padding: 20px;
+        margin: 10px auto;
+        min-height: auto;
+        box-shadow: none;
+        max-width: 100%;
+        word-break: break-word;
+      }
+
+      #contrato-preview p,
+      #contrato-preview h2 {
+        line-height: 1.5;
+      }
+
+      #contrato-preview div[style*="display: flex"] {
+        flex-direction: column !important;
+        gap: 1em;
+      }
     }
   </style>
 </head>
@@ -33,7 +56,6 @@
   <div class="max-w-4xl mx-auto bg-white p-4 sm:p-6 rounded shadow mb-10">
     <h1 class="text-2xl font-bold mb-4">Datos del Contrato de Préstamo</h1>
 
-    <!-- Datos del Prestamista -->
     <h2 class="text-lg font-semibold mb-2">Datos del Prestamista</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
       <input id="prestamista" placeholder="Nombre del Prestamista" class="w-full p-2 border rounded" oninput="actualizarVista()" />
@@ -41,7 +63,6 @@
       <input id="direccionPrestamista" placeholder="Dirección del Prestamista" class="w-full p-2 border rounded col-span-1 md:col-span-2" oninput="actualizarVista()" />
     </div>
 
-    <!-- Datos del Prestatario -->
     <h2 class="text-lg font-semibold mb-2">Datos del Prestatario</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
       <input id="prestatario" placeholder="Nombre del Prestatario" class="w-full p-2 border rounded" oninput="actualizarVista()" />
@@ -51,7 +72,6 @@
       <input id="emailPrestatario" placeholder="Correo del Prestatario" class="w-full p-2 border rounded col-span-1 md:col-span-2" oninput="actualizarVista()" />
     </div>
 
-    <!-- Datos del Préstamo -->
     <h2 class="text-lg font-semibold mb-2">Datos del Préstamo</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <input id="monto" placeholder="Monto del Préstamo" class="w-full p-2 border rounded" oninput="actualizarVista()" />
@@ -67,7 +87,7 @@
     </button>
   </div>
 
-  <!-- Vista previa del contrato visible -->
+  <!-- Vista previa del contrato -->
   <div id="contrato-preview" class="mb-10"></div>
 
   <script>
@@ -157,19 +177,28 @@
     }
 
     function generarPDF() {
-      actualizarVista();
-      const contrato = document.getElementById("contrato-preview");
-
-      html2pdf().set({
-        margin: 0,
-        filename: `Contrato_Prestamo_${get("prestatario").replaceAll(" ", "_") || "generico"}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).from(contrato).save();
-    }
-
     actualizarVista();
+    const contrato = document.getElementById("contrato-preview");
+
+    const opt = {
+      margin: 0,
+      filename: `Contrato_Prestamo_${get("prestatario").replaceAll(" ", "_") || "generico"}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,        // 2 es suficiente para buena calidad sin zoom exagerado
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0
+      },
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait'
+      }
+    };
+
+    html2pdf().set(opt).from(contrato).save();
+  }
   </script>
 </body>
 </html>
