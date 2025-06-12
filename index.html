@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contrato de Préstamo</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <!-- Formulario -->
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow mb-10">
+    <h1 class="text-2xl font-bold mb-4">Datos del Contrato de Préstamo</h1>
+
+    <!-- Datos del Prestamista -->
+    <h2 class="text-lg font-semibold mb-2">Datos del Prestamista</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <input id="prestamista" placeholder="Nombre del Prestamista" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="dniPrestamista" placeholder="Cédula" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="direccionPrestamista" placeholder="Dirección del Prestamista" class="p-2 border rounded col-span-2" oninput="actualizarVista()" />
+    </div>
+
+    <!-- Datos del Prestatario -->
+    <h2 class="text-lg font-semibold mb-2">Datos del Prestatario</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <input id="prestatario" placeholder="Nombre del Prestatario" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="dniPrestatario" placeholder="Cédula" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="direccionPrestatario" placeholder="Dirección del Prestatario" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="telefonoPrestatario" placeholder="Teléfono del Prestatario" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="emailPrestatario" placeholder="Correo del Prestatario" class="p-2 border rounded col-span-2" oninput="actualizarVista()" />
+    </div>
+
+    <!-- Datos del Préstamo -->
+    <h2 class="text-lg font-semibold mb-2">Datos del Préstamo</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input id="monto" placeholder="Monto del Préstamo" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="interes" placeholder="Tasa de Interés (%)" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="meses" placeholder="Número de Meses" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="pagoMensual" placeholder="Monto de Pago Mensual" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="cuentaBancaria" placeholder="Número de Cuenta" class="p-2 border rounded" oninput="actualizarVista()" />
+      <input id="fecha" type="date" class="p-2 border rounded" oninput="actualizarVista()" />
+    </div>
+
+    <button onclick="generarPDF()" class="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+      Generar Contrato en PDF
+    </button>
+  </div>
+
+  <!-- Vista previa del contrato -->
+  <div id="contrato" class="max-w-3xl mx-auto bg-white p-6 text-justify text-sm leading-relaxed rounded shadow">
+    <h2 class="text-xl font-bold mb-4 text-center">Modelo de Préstamo CHASE</h2>
+    <p><strong>Entre:</strong><br>
+      <span id="cPrestatario"></span><br>
+      <span id="cDniPrestatario"></span><br>
+      <span id="cDireccionPrestatario"></span><br>
+      <span id="cTelefonoPrestatario"></span><br>
+      <span id="cEmailPrestatario"></span><br><br>
+      <strong>Y:</strong><br>
+      <span id="cPrestamista"></span><br>
+      <span id="cDniPrestamista"></span><br>
+      <span id="cDireccionPrestamista"></span>
+    </p>
+
+    <p class="mt-4"><strong>Introducción:</strong><br>
+      Este acuerdo establece los términos y condiciones bajo los cuales <span id="cPrestamista2"></span> presta una cantidad de dinero a <span id="cPrestatario2"></span>, detallando las obligaciones de ambas partes.
+    </p>
+
+    <p class="mt-4"><strong>Cláusula 1: Objeto del Contrato</strong><br>
+      El presente contrato tiene como objeto regular el préstamo de la cantidad de <span id="cMonto1"></span> a <span id="cPrestatario3"></span>, que se devolverá en los términos establecidos en este documento.
+    </p>
+
+    <p class="mt-4"><strong>Cláusula 2: Monto del Préstamo</strong><br>
+      La suma total prestada es de <span id="cMonto2"></span>, la cual será entregada en su totalidad a la firma del presente contrato.
+    </p>
+
+    <p class="mt-4"><strong>Cláusula 3: Intereses y Plazo de Devolución</strong><br>
+      El préstamo devengará un interés del <span id="cInteres"></span>% mensual, y deberá ser devuelto en un plazo de <span id="cMeses"></span> meses, comenzando desde la fecha de firma del contrato.
+    </p>
+
+    <p class="mt-4"><strong>Cláusula 4: Forma de Pago</strong><br>
+      Los pagos se realizarán de la siguiente manera:<br>
+      a) Pagos mensuales de <span id="cPagoMensual"></span>;<br>
+      b) Los pagos se realizarán a través de transferencia bancaria a la cuenta <span id="cCuentaBancaria"></span>.
+    </p>
+
+    <p class="mt-4"><strong>Cláusula 5: Incumplimiento</strong><br>
+      En caso de incumplimiento de los términos acordados, el prestamista se reserva el derecho de exigir el pago inmediato del total del monto adeudado, incluyendo intereses acumulados.
+    </p>
+
+    <p class="mt-4"><strong>Cláusula 6: Disposiciones Finales</strong><br>
+      Este contrato podrá modificarse solo mediante un acuerdo por escrito, firmado por ambas partes. En caso de controversia, será resuelta en el juzgado de la ciudad de Cali.
+    </p>
+
+    <p class="mt-4">Firmado en Cali, Valle del Cauca, <span id="cFecha"></span>.</p>
+
+    <p class="mt-8 font-semibold">Atentamente,</p>
+
+    <div class="mt-6 flex flex-col md:flex-row justify-between gap-10">
+    <div>
+      <p class="font-bold"><span id="cPrestatarioFirma"></span></p>
+      <p class="text-sm text-gray-600">C.C. <span id="cDniPrestatarioFirma"></span></p>
+      <p class="text-sm text-gray-600">Prestatario</p>
+    </div>
+    <div>
+      <p class="font-bold"><span id="cPrestamistaFirma"></span></p>
+      <p class="text-sm text-gray-600">C.C. <span id="cDniPrestamistaFirma"></span></p>
+      <p class="text-sm text-gray-600">Prestamista</p>
+    </div>
+  </div>
+
+  <script>
+    const get = id => document.getElementById(id).value;
+    const fill = (id, val) => document.getElementById(id).textContent = val;
+
+    function actualizarVista() {
+      const datos = {
+        prestatario: get("prestatario"),
+        dniPrestatario: get("dniPrestatario"),
+        direccionPrestatario: get("direccionPrestatario"),
+        telefonoPrestatario: get("telefonoPrestatario"),
+        emailPrestatario: get("emailPrestatario"),
+        prestamista: get("prestamista"),
+        dniPrestamista: get("dniPrestamista"),
+        direccionPrestamista: get("direccionPrestamista"),
+        monto: get("monto"),
+        interes: get("interes"),
+        meses: get("meses"),
+        pagoMensual: get("pagoMensual"),
+        cuentaBancaria: get("cuentaBancaria"),
+        fecha: get("fecha"),
+      };
+
+      fill("cPrestatario", datos.prestatario);
+      fill("cDniPrestatario", datos.dniPrestatario);
+      fill("cDireccionPrestatario", datos.direccionPrestatario);
+      fill("cTelefonoPrestatario", datos.telefonoPrestatario);
+      fill("cEmailPrestatario", datos.emailPrestatario);
+      fill("cPrestamista", datos.prestamista);
+      fill("cDniPrestamista", datos.dniPrestamista);
+      fill("cDireccionPrestamista", datos.direccionPrestamista);
+      fill("cPrestamista2", datos.prestamista);
+      fill("cPrestatario2", datos.prestatario);
+      fill("cMonto1", datos.monto);
+      fill("cPrestatario3", datos.prestatario);
+      fill("cMonto2", datos.monto);
+      fill("cInteres", datos.interes);
+      fill("cMeses", datos.meses);
+      fill("cPagoMensual", datos.pagoMensual);
+      fill("cCuentaBancaria", datos.cuentaBancaria);
+      fill("cFecha", datos.fecha);
+      fill("cPrestatarioFirma", datos.prestatario);
+      fill("cDniPrestatarioFirma", datos.dniPrestatario);
+      fill("cPrestamistaFirma", datos.prestamista);
+      fill("cDniPrestamistaFirma", datos.dniPrestamista);
+    }
+
+    function generarPDF() {
+      actualizarVista(); // Asegura datos actualizados antes de exportar
+      const contrato = document.getElementById("contrato");
+
+      html2pdf().set({
+        margin: 5,
+        filename: `Contrato_Prestamo_${get("prestatario")}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).from(contrato).save();
+    }
+  </script>
+</body>
+</html>
